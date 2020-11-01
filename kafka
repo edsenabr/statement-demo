@@ -1,0 +1,68 @@
+#!/bin/bash
+###############################################################################
+# auto complete configuration; source this file to enable it
+###############################################################################
+
+CURRENT_DIR=$(dirname ${BASH_SOURCE[-1]})
+KAFKA_HOME=$CURRENT_DIR/../kafka
+
+
+items=$(ls -1  $KAFKA_HOME/bin/kafka-*.sh | sed -re 's/.+kafka-(.+).sh$/\1/')
+items_json=$(ls -1  $KAFKA_HOME/bin/kafka-*.sh | sed -re 's/.+kafka-(.+).sh$/"\1":null,/')
+AUTOCOMPLETE_OPTIONS='{
+	'"$items_json"'
+	"inspect": null
+}'
+. $CURRENT_DIR/autocomplete-helper.sh
+
+# stop processing if we're being sourced (autocomplete)
+return 0 2>/dev/null
+
+_usage() {
+	echo "
+invalid option: $action
+
+	source $me for enabling auto-complete then
+	$me <tab><tab>
+
+valid options:
+	*** add local to the commands to execute it against a local environment on docker. ***
+
+	$me [local] inspect: inspect all the known topics (load and generate) and consumer groups"
+	for item in $items; do
+		echo "	$me [local] $item"
+	done
+
+}
+
+if [[ $1 == 'local' ]]; then
+	bootstrap="240.12.0.2:9092"
+	shift
+else
+	bootstrap="b-1.statement-demo.340xev.c10.kafka.us-east-1.amazonaws.com:9094,b-2.statement-demo.340xev.c10.kafka.us-east-1.amazonaws.com:9094,b-3.statement-demo.340xev.c10.kafka.us-east-1.amazonaws.com:9094"
+	option=$($KAFKA_HOME/bin/kafka-$2.sh --help 2>&1 | grep -Eo -- "--\w+[-.]config\s+" | uniq| grep -E "command|admin|producer|consumer")
+	config="$option msk-client.properties"
+fi
+
+me=$0
+action=$1
+
+if [[ -z $(grep $action <<< $items)  ]]; then 
+	_usage $action
+elif [[ $action = "inspect" ]]; then
+	while /bin/true; do
+		topics=$($KAFKA_HOMEHOME/bin/kafka-consumer-groups.sh $bootstrap $config --describe --all-groups)
+		grep "^data-ingestion" <<<$topics | awk "{print \$6}" | paste -s -d+ - | bc | numfmt --grouping | ts "[%H:%M:%S] lag@generate ="
+		grep "^load-generate" <<<$topics | awk "{print \$6}" | paste -s -d+ - | bc | numfmt --grouping | ts "[%H:%M:%S] lag@load     ="
+		grep "^data-ingestion" <<<$topics | awk "{print \$4}" | paste -s -d+ - | bc | numfmt --grouping | ts "[%H:%M:%S] consumed@generate ="
+		grep "^load-generate" <<<$topics | awk "{print \$4}" | paste -s -d+ - | bc | numfmt --grouping | ts "[%H:%M:%S] consumed@load     ="
+		echo =========================
+		echo 
+		sleep 5
+	done;
+else
+	$KAFKA_HOME/bin/kafka-$action.sh \
+		$config \
+		$bootstrap \
+		$*
+fi

@@ -1,0 +1,82 @@
+{
+	"folders": [
+		{
+			"name": "statement-demo",
+			"path": "."
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"python.linting.enabled": false,
+		"python.languageServer": "Microsoft",
+		"python.linting.pylintEnabled": false,
+		"maven.view": "flat"
+	},
+	"launch": {
+		"configurations": [
+			{
+				"type": "java",
+				"name": "data-ingestion",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.DataingestionApplication",
+				"projectName": "data-ingestion",
+				"args": "--spring.profiles.active=local",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			},
+			{
+				"name": "CDK Synth",
+				"type": "python",
+				"request": "launch",
+				"program": "app.py",
+				"console": "internalConsole"
+			},
+			{
+				"type": "java",
+				"name": "load",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.LoadApplication",
+				"projectName": "load",
+				"args": "--spring.profiles.active=local",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			},
+			{
+				"type": "java",
+				"name": "load-generate",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.LoadGenerateApplication",
+				"projectName": "load-generate",
+				"args": "--spring.profiles.active=local",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			},
+			{
+				"type": "java",
+				"name": "search",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.SearchApplication",
+				"projectName": "search",
+				"args": "--spring.profiles.active=local",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			}
+		]
+	}
+}

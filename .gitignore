@@ -1,0 +1,45 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+**/target/**
+*.jks
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+.vscode/
+/data-ingestion/
+/load/
+/load-generate/
+/search/
+/infra/env
+/infra/cdk.out
+/infra/custom_resources/**/lib
+/infra/stacks/__pycache__
+/infra/stacks/infra.egg-info
+/metrics/*.csv
+/metrics/*.png
+/metrics/*.ods
+/metrics/*.json
