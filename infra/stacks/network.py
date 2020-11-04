@@ -13,8 +13,13 @@ class Network(core.Stack):
       self, 
       "vpc",
       cidr=self.node.try_get_context("vpc")["cidr"],
+      subnet_configuration=[ec2.SubnetConfiguration(
+        name="private",
+        subnet_type=ec2.SubnetType.ISOLATED,
+        cidr_mask=23
+      )],
       max_azs=3,
-      nat_gateways=1
+      nat_gateways=0
     )
 
     certs = MTLSCertificates()
@@ -40,7 +45,7 @@ class Network(core.Stack):
       vpc_id=self.vpc.vpc_id
     )
 
-    for subnet in self.vpc.private_subnets: 
+    for subnet in self.vpc.isolated_subnets: 
       ec2.CfnClientVpnTargetNetworkAssociation(
         self, 
         "Associations%s" % subnet.node.id,

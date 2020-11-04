@@ -25,7 +25,7 @@ class Kubernetes(core.Stack):
 			default_capacity_instance=ec2.InstanceType(self.node.try_get_context("kubernetes")["default_capacity_instance"]),
 			cluster_name="statement-demo",
 			vpc=VPC,
-			vpc_subnets = VPC.private_subnets,
+			vpc_subnets = VPC.isolated_subnets,
 			masters_role=cluster_admin,
 			version=eks.KubernetesVersion.V1_17,
 			endpoint_access=eks.EndpointAccess.PRIVATE

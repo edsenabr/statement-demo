@@ -90,7 +90,7 @@ class Elastic(core.Stack):
       use_unsigned_basic_auth=True, 
       vpc_options=es.VpcOptions(
         security_groups=[],
-        subnets=VPC.private_subnets
+        subnets=VPC.isolated_subnets
       ), 
       zone_awareness=es.ZoneAwarenessConfig(
         availability_zone_count=3, 
