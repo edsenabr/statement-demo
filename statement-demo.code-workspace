@@ -30,6 +30,7 @@
 			},
 			{
 				"name": "CDK Synth",
+				"cwd": "${workspaceFolder}/infra",
 				"type": "python",
 				"request": "launch",
 				"program": "app.py",
