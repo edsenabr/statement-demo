@@ -5,7 +5,7 @@
 
 AUTOCOMPLETE_OPTIONS='{
 	"metrics": {
-      "ingestion": null,
+      "ingest": null,
       "search": null
 	},
 	"batch-size": null,
@@ -450,25 +450,28 @@ case $action in
 		header=$(jq -c '["Timestamp", (.[] |  .Label)]' <<<$metrics)
 		type=$2
 		run=$3
-		start=$(date -d $4 +'%s')
-		finish=$(date -d $5 +'%s')
-		# aws cloudwatch get-metric-data \
-		# 	--scan-by TimestampAscending \
-		# 	--start-time $start \
-		# 	--end-time $finish \
-		# 	--metric-data-queries "$metrics" \
-		# 	| jq -r "$header,([.MetricDataResults[1].Timestamps, .MetricDataResults[].Values] | transpose | .[]) | @csv" > metrics-$type-$run.csv
-		gnuplot -c infra/cloudwatch/$type.plot $run $start $finish
+		start=$(date -d "$4+00:00" +'%s')
+		finish=$(date -d "$5+00:00" +'%s')
+		set -x
+		aws cloudwatch get-metric-data \
+			--scan-by TimestampAscending \
+			--start-time $start \
+			--end-time $finish \
+			--metric-data-queries "$metrics" \
+			| jq -r "$header,([.MetricDataResults[1].Timestamps, .MetricDataResults[].Values] | transpose | .[]) | @csv" > metrics-$type-$run.csv
+		gnuplot -c $type.plot $run $start $finish
 	;;
 
 	"batch-size")
+		start=$(date -d "$2+00:00" +"%s")
+		end=$(date -d "$3+00:00" +"%s")
 		query='fields log
 			| filter log like /LancamentoListRepositoryImpl.save - Records so far/
 			| parse log /(?<date>\d{2}-\d{2}-\d{4}) (?<time>\d{2}:\d{2}:\d{2}.\d{3}).+added (?<records>\d+),/
 			| sort by time asc
 			| earliest(date) as start_date, earliest(time) as start, latest(date) as end_date, latest(time) as end, ((latest(@timestamp) - earliest(@timestamp))/1000) as duration,  count(time) as requests, sum(records) as total, sum(crt) as created, sum(upd) as updated, sum (err) as errors, avg(records) as batch_size
 		'
-		id=$(aws logs  start-query --log-group-name '/aws/containerinsights/statement-demo/application' --start-time $2 --end-time $3 --query-string "$query" --query 'queryId' --output text)
+		id=$(aws logs  start-query --log-group-name '/aws/containerinsights/statement-demo/application' --start-time $start --end-time $end --query-string "$query" --query 'queryId' --output text)
 		#id="825db7ba-c620-4d1b-9f7a-7c706f28a9d2"
 		echo $id
 		while [[ $status != "Complete" ]]; do 

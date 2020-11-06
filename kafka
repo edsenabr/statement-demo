@@ -10,7 +10,14 @@ KAFKA_HOME=$CURRENT_DIR/../kafka
 items=$(ls -1  $KAFKA_HOME/bin/kafka-*.sh | sed -re 's/.+kafka-(.+).sh$/\1/')
 items_json=$(ls -1  $KAFKA_HOME/bin/kafka-*.sh | sed -re 's/.+kafka-(.+).sh$/"\1":null,/')
 AUTOCOMPLETE_OPTIONS='{
-	'"$items_json"'
+	"local": {
+		'"$items_json"'
+		"inspect": null
+	},
+	"remote": {
+		'"$items_json"'
+		"inspect": null
+	},
 	"inspect": null
 }'
 . $CURRENT_DIR/autocomplete-helper.sh
@@ -63,6 +70,6 @@ elif [[ $action = "inspect" ]]; then
 else
 	$KAFKA_HOME/bin/kafka-$action.sh \
 		$config \
-		$bootstrap \
+		--bootstrap-server $bootstrap \
 		$*
 fi
