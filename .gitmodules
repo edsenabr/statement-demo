@@ -1,0 +1,12 @@
+[submodule "data-ingestion"]
+	path = data-ingestion
+	url = https://github.com/edsenabr/data-ingestion.git
+[submodule "load-generate"]
+	path = load-generate
+	url = https://github.com/edsenabr/load-generate.git
+[submodule "load"]
+	path = load
+	url = https://github.com/edsenabr/load.git
+[submodule "search"]
+	path = search
+	url = https://github.com/edsenabr/search.git
