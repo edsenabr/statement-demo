@@ -97,7 +97,6 @@ case $action in
 	;;
 
 	"logs")
-		
 		[[ "$item" == "load" ]] && selector="job=$parameter" || selector="app=$item";
 		
 		while /bin/true; do
@@ -105,12 +104,28 @@ case $action in
 			kubectl -n $item wait \
 			--for=condition=Ready \
 			--selector=$selector \
-			--timeout=5s pods && \
-				kubectl logs -f --selector=$selector -n $item --max-log-requests=60
+			--timeout=1s pods && \
+				kubectl logs -f --selector=$selector -n $item --max-log-requests=$parameter
 			set +x
 			sleep 1
 		done;
 	;;
+
+	"debug")
+		[[ "$item" == "load" ]] && selector="job=$parameter" || selector="app=$item";
+		
+		while /bin/true; do
+			pod=$(kubectl -n $item wait \
+			--for=condition=Ready \
+			--selector=$selector \
+			--timeout=1s pods |\
+			awk '{print $1}')
+			echo $pod
+			kubectl -n $item port-forward $pod 1098:1098
+			sleep 1
+		done;
+	;;
+
 
 	"kill")
 		kubectl delete deploy -n $item $item
@@ -125,7 +140,8 @@ case $action in
 	;;
 
 	"list")
-		kubectl get pod --selector=app=$item --field-selector=status.phase=Running -n $item
+		[[ $parameter == "wait" ]] && switch="-w";
+		kubectl get pod --selector=app=$item --field-selector=status.phase=Running -n $item $switch
 	;;
 
 	"restart")
