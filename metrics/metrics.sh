@@ -57,6 +57,31 @@ fi
 
 case $action in
 
+	"test-metrics")
+		metrics='[
+			{
+				"Id": "m1",
+				"Label": "PageViewCount",
+				"MetricStat": {
+					"Metric": {
+						"Namespace": "MyService",
+						"MetricName": "PageViewCount"
+					},
+					"Period": 1,
+					"Stat": "Average"
+				},
+				"ReturnData": true
+			}
+		]'
+		header=$(jq -c '["Timestamp", (.[] |  .Label)]' <<<$metrics)
+		aws cloudwatch get-metric-data \
+			--scan-by TimestampAscending \
+			--start-time "2020-11-10T02:00:00.000Z" \
+			--end-time "2020-11-10T02:01:00.000Z" \
+			--metric-data-queries "$metrics" #\
+			#| jq -r "$header,([.MetricDataResults[1].Timestamps, .MetricDataResults[].Values] | transpose | .[]) | @csv"	
+	;;
+
 	"metrics")
 		metrics='[
 			{

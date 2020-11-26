@@ -46,8 +46,9 @@ if [[ $1 == 'local' ]]; then
 	bootstrap="240.12.0.2:9092"
 	shift
 else
-	bootstrap="b-1.statement-demo.340xev.c10.kafka.us-east-1.amazonaws.com:9094,b-2.statement-demo.340xev.c10.kafka.us-east-1.amazonaws.com:9094,b-3.statement-demo.340xev.c10.kafka.us-east-1.amazonaws.com:9094"
-	option=$($KAFKA_HOME/bin/kafka-$2.sh --help 2>&1 | grep -Eo -- "--\w+[-.]config\s+" | uniq| grep -E "command|admin|producer|consumer")
+	shift
+	bootstrap="b-2.statement-demo.s84ue7.c3.kafka.us-east-1.amazonaws.com:9094,b-3.statement-demo.s84ue7.c3.kafka.us-east-1.amazonaws.com:9094,b-1.statement-demo.s84ue7.c3.kafka.us-east-1.amazonaws.com:9094"
+	option=$($KAFKA_HOME/bin/kafka-$1.sh --help 2>&1 | grep -Eo -- "--\w+[-.]config\s+" | uniq| grep -E "command|admin|producer|consumer")
 	config="$option msk-client.properties"
 fi
 
@@ -68,6 +69,7 @@ elif [[ $action = "inspect" ]]; then
 		sleep 5
 	done;
 else
+	set -x
 	$KAFKA_HOME/bin/kafka-$action.sh \
 		$config \
 		--bootstrap-server $bootstrap \

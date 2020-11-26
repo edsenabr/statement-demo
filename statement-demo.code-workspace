@@ -8,26 +8,14 @@
 	"settings": {
 		"java.configuration.updateBuildConfiguration": "automatic",
 		"python.linting.enabled": false,
-		"python.languageServer": "Microsoft",
+		"python.languageServer": "Pylance",
 		"python.linting.pylintEnabled": false,
-		"maven.view": "flat"
+		"maven.view": "flat",
+		"scm.alwaysShowActions": true,
+		"scm.alwaysShowRepositories": true
 	},
 	"launch": {
 		"configurations": [
-			{
-				"type": "java",
-				"name": "data-ingestion",
-				"request": "launch",
-				"cwd": "${workspaceFolder}",
-				"console": "internalConsole",
-				"mainClass": "br.com.exemplo.dataingestion.DataingestionApplication",
-				"projectName": "data-ingestion",
-				"args": "--spring.profiles.active=local",
-				"env": {
-					"LC_NUMERIC": "en_US.UTF-8",
-					"POD_NAME": "localhost"
-				}
-			},
 			{
 				"name": "CDK Synth",
 				"cwd": "${workspaceFolder}/infra",
@@ -38,7 +26,7 @@
 			},
 			{
 				"type": "java",
-				"name": "load",
+				"name": "load@local",
 				"request": "launch",
 				"cwd": "${workspaceFolder}",
 				"console": "internalConsole",
@@ -52,7 +40,21 @@
 			},
 			{
 				"type": "java",
-				"name": "load-generate",
+				"name": "load@remote",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.LoadApplication",
+				"projectName": "load",
+				"args": "--spring.profiles.active=remote",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			},
+			{
+				"type": "java",
+				"name": "load-generate@local",
 				"request": "launch",
 				"cwd": "${workspaceFolder}",
 				"console": "internalConsole",
@@ -66,13 +68,70 @@
 			},
 			{
 				"type": "java",
-				"name": "search",
+				"name": "load-generate@remote",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.LoadGenerateApplication",
+				"projectName": "load-generate",
+				"args": "--spring.profiles.active=remote",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			},
+			{
+				"type": "java",
+				"name": "search@local",
 				"request": "launch",
 				"cwd": "${workspaceFolder}",
 				"console": "internalConsole",
 				"mainClass": "br.com.exemplo.dataingestion.SearchApplication",
 				"projectName": "search",
 				"args": "--spring.profiles.active=local",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			},
+			{
+				"type": "java",
+				"name": "search@remote",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.SearchApplication",
+				"projectName": "search",
+				"vmArgs": "-Xms1G -Xmx1G",
+				"args": "--spring.profiles.active=remote",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			},
+			{
+				"type": "java",
+				"name": "data-ingestion@local",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.DataingestionApplication",
+				"projectName": "data-ingestion",
+				"args": "--spring.profiles.active=local",
+				"env": {
+					"LC_NUMERIC": "en_US.UTF-8",
+					"POD_NAME": "localhost"
+				}
+			},
+			{
+				"type": "java",
+				"name": "data-ingestion@remote",
+				"request": "launch",
+				"cwd": "${workspaceFolder}",
+				"console": "internalConsole",
+				"mainClass": "br.com.exemplo.dataingestion.DataingestionApplication",
+				"projectName": "data-ingestion",
+				"args": "--spring.profiles.active=remote",
 				"env": {
 					"LC_NUMERIC": "en_US.UTF-8",
 					"POD_NAME": "localhost"
