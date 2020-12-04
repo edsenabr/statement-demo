@@ -10,3 +10,6 @@
 [submodule "search"]
 	path = search
 	url = https://github.com/edsenabr/search.git
+[submodule "ingress"]
+	path = ingress
+	url = https://github.com/edsenabr/elastic-ingress.git
