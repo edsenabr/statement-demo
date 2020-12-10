@@ -17,6 +17,59 @@
 	"launch": {
 		"configurations": [
 			{
+				"name": "update_targets.py",
+				"cwd": "${workspaceFolder}/ingress/lambda",
+				"type": "python",
+				"request": "launch",
+				"program": "update_targets.py",
+				"console": "internalConsole",
+				"env": {
+					"AWS_PROFILE" : "provedora",
+					"AWS_DEFAULT_REGION": "sa-east-1"
+				}
+			},
+			{
+				"name": "register_targets.py",
+				"cwd": "${workspaceFolder}/ingress",
+				"type": "python",
+				"request": "launch",
+				"program": "register_targets.py",
+				"console": "internalConsole",
+				"env": {
+					"AWS_PROFILE" : "provedora"
+				}
+			},
+			{
+				"name": "alb_es.py",
+				"cwd": "${workspaceFolder}/infra",
+				"type": "python",
+				"request": "launch",
+				"program": "alb_es.py",
+				"console": "internalConsole",
+				"env": {
+					"AWS_PROFILE" : "provedora"
+				}
+			},
+			{
+				"name": "nlb_alb.py",
+				"cwd": "${workspaceFolder}/infra",
+				"type": "python",
+				"request": "launch",
+				"program": "nlb_alb.py",
+				"console": "internalConsole",
+				"env": {
+					"AWS_PROFILE" : "provedora"
+				}
+			},
+			{
+				"name": "es-certificates",
+				"cwd": "${workspaceFolder}/infra",
+				"type": "python",
+				"request": "launch",
+				"program": "es-certificates.py",
+				"console": "internalConsole"
+			},
+			{
 				"name": "CDK Synth",
 				"cwd": "${workspaceFolder}/infra",
 				"type": "python",
@@ -106,7 +159,8 @@
 				"args": "--spring.profiles.active=remote",
 				"env": {
 					"LC_NUMERIC": "en_US.UTF-8",
-					"POD_NAME": "localhost"
+					"POD_NAME": "localhost",
+					"AWS_PROFILE" : "provedora"
 				}
 			},
 			{
