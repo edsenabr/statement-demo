@@ -13,14 +13,13 @@ services:
         ipv4_address: 240.12.0.2
 
   elasticsearch:
-    image: elasticsearch:7.7.1
+    image: elasticsearch:7.10.1
     restart: unless-stopped
     environment:
       - discovery.type=single-node
     networks:
       statement:
         ipv4_address: 240.12.0.3
-
 
   # grafana:
   #   image: grafana/grafana
@@ -39,6 +38,19 @@ services:
   #   networks:
   #     statement:
   #       ipv4_address: 240.12.0.5
+
+  kibana:
+    image: kibana:7.10.1
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://240.12.0.3:9200
+      ELASTICSEARCH_HOSTS: http://240.12.0.3:9200
+    depends_on:
+    - "elasticsearch"
+    networks:
+      statement:
+        ipv4_address: 240.12.0.6
 
 
 networks:
