@@ -13,3 +13,6 @@
 [submodule "ingress"]
 	path = ingress
 	url = https://github.com/edsenabr/elastic-ingress.git
+[submodule "infra"]
+	path = infra
+	url = https://github.com/edsenabr/statement-demo-infra.git
